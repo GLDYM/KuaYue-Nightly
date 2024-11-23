@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'KasugaLibGroup/KasugaLib'
-          ref: '1.20.1-create'
+          ref: '1.20.1-create-2'
           path: 'kasugalib'
           submodules: true
           
