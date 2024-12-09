@@ -1,5 +1,7 @@
 name: Build Nightly
 on:
+  schedule:
+    - cron: "0 22 * * *"
   workflow_dispatch:
 
 jobs:
@@ -21,6 +23,7 @@ jobs:
           repository: 'KasugaLibGroup/NeoKuaYue'
           ref: '1.20.1-dev'
           path: 'kuayue'
+          submodules: true
           
       - name: Setup Java
         uses: actions/setup-java@v4.5.0
@@ -47,8 +50,23 @@ jobs:
       - name: Build KasugaLib Javascript Runtime
         run: |
           cd ./kasugalib
+          git submodule update --remote --recursive
+          rm ./src/generated/resources/script/ -r -f
           yarn
           yarn build
+          cd ..
+      - name: Build KuaYue Javascript Code Pack
+        run: |    
+          cd ./kuayue
+          git submodule update --remote --recursive
+          rm ./src/generated/resources/script/ -r -f
+          corepack enable
+          cd ./scripts/
+          yarn install
+          yarn tsx ./build.ts
+          corepack disable
+          cd ..
+          
           
       - name: Build
         run: |
@@ -90,11 +108,13 @@ jobs:
           
           echo $NIGHTLY_VERSIONS >> ./artifacts/build-info.json
 
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: nightly
-          path: ./artifacts/*
-
+      - name: Upload Artifact to FTP Server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with: 
+          server: ${{ secrets.KUAYUE_UPLOAD_SERVER }}
+          username: uploader
+          password: ${{ secrets.KUAYUE_UPLOAD_PASSWORD }}
+          local-dir: ./artifacts/
+          server-dir: ./nightly/
           
       
