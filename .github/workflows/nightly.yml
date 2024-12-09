@@ -55,18 +55,6 @@ jobs:
           yarn
           yarn build
           cd ..
-      - name: Build KuaYue Javascript Code Pack
-        run: |    
-          cd ./kuayue
-          git submodule update --remote --recursive
-          rm ./src/generated/resources/script/ -r -f
-          corepack enable
-          cd ./scripts/
-          yarn install
-          yarn tsx ./build.ts
-          corepack disable
-          cd ..
-          
           
       - name: Build
         run: |
