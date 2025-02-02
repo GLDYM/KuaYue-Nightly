@@ -77,7 +77,7 @@ jobs:
 
           cd ./kasugalib
           
-          ./gradlew build -Pmod_version="$KASUGA_VERSION" -PjarVersion="$KASUGA_VERSION"
+          ./gradlew build -Pmod_version="$KASUGA_VERSION" -PjarVersion="$KASUGA_VERSION"  -Pnightly=true
 
           cd ..
           
@@ -86,7 +86,7 @@ jobs:
 
           cd ./kuayue
 
-          ./gradlew build -Pmod_version="$KUAYUE_VERSION" -PjarVersion="$KUAYUE_VERSION" -Pkasuga_lib_version="$KASUGA_VERSION"
+          ./gradlew build -Pmod_version="$KUAYUE_VERSION" -PjarVersion="$KUAYUE_VERSION" -Pkasuga_lib_version="$KASUGA_VERSION"  -Pnightly=true
 
           cd ..
           
